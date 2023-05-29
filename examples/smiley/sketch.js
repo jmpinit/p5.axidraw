@@ -10,7 +10,6 @@ const SMILEY_RADIUS = 5;
 
 const axi = new axidraw.AxiDraw();
 let connected = false;
-let drawing = false;
 
 function setup() {
   createCanvas(400, 400);
@@ -26,14 +25,13 @@ function mmToPx(mmPos) {
   );
 }
 
-
-async function drawArc(x, y, radius, startAngle, endAngle, pointCount = 16) {
+function drawArc(x, y, radius, startAngle, endAngle, pointCount = 16) {
   const angleInc = (endAngle - startAngle) / pointCount;
 
   const x1 = radius * cos(startAngle);
   const y1 = radius * sin(startAngle);
-  await axi.moveTo(x + x1, y + y1);
-  await axi.penDown();
+  axi.moveTo(x + x1, y + y1);
+  axi.penDown();
 
   for (let i = 0; i <= pointCount; i += 1) {
     const angle = startAngle + i * angleInc;
@@ -41,37 +39,31 @@ async function drawArc(x, y, radius, startAngle, endAngle, pointCount = 16) {
     const relX = radius * cos(angle);
     const relY = radius * sin(angle);
 
-    await axi.moveTo(x + relX, y + relY);
+    axi.moveTo(x + relX, y + relY);
   }
 
-  await axi.penUp();
+  axi.penUp();
 }
 
-async function drawSmiley(x, y) {
-  // Don't draw if we're already drawing,
-  // because then the AxiDraw would be getting commands for different smileys interleaved
-  if (drawing) {
+function drawSmiley(x, y) {
+  if (axi.isBusy()) {
     return;
   }
 
-  drawing = true;
-
   // Draw the outline
-  await drawArc(x, y, SMILEY_RADIUS, 0, TWO_PI);
+  drawArc(x, y, SMILEY_RADIUS, 0, TWO_PI);
 
   // Draw the eyes
   const eyeRadius = SMILEY_RADIUS / 6;
-  await drawArc(x - SMILEY_RADIUS / 2, y - SMILEY_RADIUS / 3, eyeRadius, 0, TWO_PI);
-  await drawArc(x + SMILEY_RADIUS / 2, y - SMILEY_RADIUS / 3, eyeRadius, 0, TWO_PI);
+  drawArc(x - SMILEY_RADIUS / 2, y - SMILEY_RADIUS / 3, eyeRadius, 0, TWO_PI);
+  drawArc(x + SMILEY_RADIUS / 2, y - SMILEY_RADIUS / 3, eyeRadius, 0, TWO_PI);
 
   // Draw the mouth
   const mouthRadius = SMILEY_RADIUS / 2;
-  await drawArc(x, y + SMILEY_RADIUS / 6, mouthRadius, 0, PI);
+  drawArc(x, y + SMILEY_RADIUS / 6, mouthRadius, 0, PI);
 
   // Make it easier to recover from mistakes by turning off the motors
-  await axi.disable();
-
-  drawing = false;
+  axi.disable();
 }
 
 function smileyPosition() {

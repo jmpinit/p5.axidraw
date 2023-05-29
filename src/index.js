@@ -82,6 +82,14 @@ export class AxiDraw {
   }
 
   /**
+   * True if the AxiDraw is executing commands.
+   * @returns {boolean}
+   */
+  isBusy() {
+    return this.commands.length > 0;
+  }
+
+  /**
    * Connect to the AxiDraw via USB serial.
    * This will pop up a browser dialog asking the user to select the USB serial
    * connection for the AxiDraw.
