@@ -1,11 +1,8 @@
-# p5.axidraw
+/**
+ * This example shows how to connect to the AxiDraw and draw a line.
+ * Click the canvas to connect to the AxiDraw. Then click again to draw the line.
+ */
 
-A [P5.js](https://p5js.org/) library for controlling the [AxiDraw](https://axidraw.com/)
-via the [WebSerial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API).
-
-## Usage
-
-```js
 const axi = new axidraw.AxiDraw();
 let connected = false;
 
@@ -27,13 +24,10 @@ function mouseClicked() {
   axi.penDown();
   axi.moveTo(10, 10);
   axi.penUp();
-  
+
   // Draw a diagonal line, but async
-  
+
   // axi.penDown()
   //   .then(() => axi.moveTo(10, 10))
   //   .then(() => axi.penUp());
 }
-```
-
-See the [examples](examples) directory for more.
