@@ -37,3 +37,7 @@ function mouseClicked() {
 ```
 
 See the [examples](examples) directory for more.
+
+## Documentation
+
+See [jmpinit.github.io/p5.axidraw](https://jmpinit.github.io/p5.axidraw) for the API docs.
