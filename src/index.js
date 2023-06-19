@@ -267,4 +267,58 @@ export class AxiDraw {
       await wait(timeToTarget);
     });
   }
+
+  /**
+   * Configure an analog input channel.
+   * | Channel | Pin | Comments                                 |
+   * | :------ | :-  | :--------------------------------------- |
+   * | 0       | RA0 | Connected to current adjustment trim-pot |
+   * | 1       | RA1 |                                          |
+   * | 2       | RA2 |                                          |
+   * | 3       | RA3 | (don't use) Pen lift servo power enable  |
+   * | 4       | RA5 |                                          |
+   * | 5       | RE0 | (don't use) Motor enable 1               |
+   * | 6       | RE1 | (don't use) MS2                          |
+   * | 7       | RE2 | (don't use) MS1                          |
+   * | 8       | RB2 | Servo connector JP3                      |
+   * | 9       | RB3 | Servo connector JP4                      |
+   * | 10      | RB1 | Pen lift servo connector                 |
+   * | 11      | RC2 |                                          |
+   * | 12      | RB0 | Servo connector JP2                      |
+   * @see analogRead
+   * @param {number} channel - The analog channel number (0-12).
+   * @param {boolean} enabled - Whether the channel should be enabled.
+   * @returns {Promise<void>} - Resolves when the channel is configured.
+   */
+  async analogConfigure(channel, enabled) {
+    // The EiBotBoard analog configure command allows for 16 channels, but only
+    // the lower 13 correspond to physical pins.
+    if (channel < 0 || channel > 12) {
+      throw new Error('Invalid channel number');
+    }
+
+    await this.#command(async () => {
+      await this.ebb.analogConfigure(channel, enabled);
+    });
+  }
+
+  /**
+   * Read an analog input channel. The value is normalized to a range of 0-1,
+   *   where 1 represents 3.3V. The channel must be enabled with `analogConfigure`
+   *   first. See `analogConfigure` for a list of channels and their pins.
+   * @see analogConfigure
+   * @param {number} channel - The analog channel number (0-12).
+   * @returns {Promise<number>} - Resolves with the normalized value (0-1).
+   */
+  analogRead(channel) {
+    return this.#command(async () => {
+      const analogValues = await this.ebb.analogValueGet(channel);
+
+      if (!(channel in analogValues)) {
+        throw new Error(`Channel not enabled. Enable it with analogConfigure(${channel}, true) first.`);
+      }
+
+      return analogValues[channel] / 1023; // Return normalized value
+    });
+  }
 }
