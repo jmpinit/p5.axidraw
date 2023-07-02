@@ -268,6 +268,20 @@ export class AxiDraw {
     });
   }
 
+  stop() {
+    if (!this.connected) {
+      return Promise.resolve();
+    }
+
+    // Send the stop command immediately
+    const stopPromise = this.ebb.emergencyStop(false);
+
+    // Cancel all the outstanding commands in the queue
+    this.commands = []; // FIXME: actually cancel the outstanding commands
+
+    return stopPromise;
+  }
+
   /**
    * Configure an analog input channel.
    * | Channel | Pin | Comments                                 |
