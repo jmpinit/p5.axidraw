@@ -291,6 +291,10 @@ export class AxiDraw {
    * @returns {Promise<void>} - Resolves when the channel is configured.
    */
   async analogConfigure(channel, enabled) {
+    if (!this.connected) {
+      return;
+    }
+
     // The EiBotBoard analog configure command allows for 16 channels, but only
     // the lower 13 correspond to physical pins.
     if (channel < 0 || channel > 12) {
@@ -311,6 +315,10 @@ export class AxiDraw {
    * @returns {Promise<number>} - Resolves with the normalized value (0-1).
    */
   analogRead(channel) {
+    if (!this.connected) {
+      return Promise.resolve();
+    }
+
     return this.#command(async () => {
       const analogValues = await this.ebb.analogValueGet(channel);
 
