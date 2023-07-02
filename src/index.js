@@ -2,6 +2,7 @@ import {
   EiBotBoard,
   MOTOR_STEP_DIV16,
   MOTOR_DISABLE,
+  SERVO_CHANNEL_PEN,
 } from 'ebb-control';
 
 /**
@@ -212,6 +213,17 @@ export class AxiDraw {
         await wait(1000); // TODO: optimize this
       }
     });
+  }
+
+  /**
+   * Directly control the pen lift servo position.
+   * @param {number} normalizedHeight - The servo position in the range [0, 1].
+   *   1 is up and 0 is down.
+   * @returns {Promise<void>} - Resolves when the command is sent.
+   */
+  setPenHeight(normalizedHeight) {
+    const height = Math.floor(Math.max(Math.min((1 - normalizedHeight) * 65535, 65535), 0));
+    return this.#command(() => this.ebb.servoOutput(height, SERVO_CHANNEL_PEN, 32000));
   }
 
   /**
