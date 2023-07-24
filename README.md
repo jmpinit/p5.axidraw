@@ -1,7 +1,8 @@
 # p5.axidraw
 
 A [p5.js](https://p5js.org/) library for controlling the [AxiDraw](https://axidraw.com/)
-via the [WebSerial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API).
+pen plotter via the
+[WebSerial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API).
 
 ## Usage
 
