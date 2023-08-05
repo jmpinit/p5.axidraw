@@ -355,4 +355,18 @@ export class AxiDraw {
       return analogValues[channel] / 1023; // Return normalized value
     });
   }
+
+  /**
+   * Read a byte from RAM at the specified address.
+   * See {@link https://evil-mad.github.io/EggBot/ebb.html#MR}.
+   * @param {number} address - Address to read (0 to 4095).
+   * @returns {Promise<number>} - Resolves with the value at the given address (0-255).
+   */
+  memoryRead(address) {
+    if (!this.connected) {
+      return Promise.resolve();
+    }
+
+    return this.#command(() => this.ebb.memoryRead(address));
+  }
 }
