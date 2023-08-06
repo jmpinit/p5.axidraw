@@ -6,6 +6,20 @@ pen plotter via the
 
 ## Usage
 
+Upload [the latest release](https://github.com/jmpinit/p5.axidraw/releases/latest) as a
+file in your sketch and then reference it from **index.html** like so:
+
+```html
+<head>
+  ...
+  <script src="p5.axidraw.js"></script>
+  ...
+</head>
+```
+
+An example sketch that connects to the AxiDraw when the mouse is clicked and draws a
+diagonal line:
+
 ```js
 const axi = new axidraw.AxiDraw();
 let connected = false;
