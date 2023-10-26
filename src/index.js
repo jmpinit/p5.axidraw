@@ -294,6 +294,19 @@ export class AxiDraw {
     return stopPromise;
   }
 
+  servoOut(pin, dutyCycle) {
+    if (!this.connected) {
+      return Promise.resolve();
+    }
+
+    if (dutyCycle < 0 || dutyCycle > 1) {
+      throw new Error('Duty cycle must be between 0 and 1');
+    }
+
+    const onTime = Math.floor(dutyCycle * 65535);
+    return this.#command(() => this.ebb.servoOutput(onTime, pin, 0, 0));
+  }
+
   /**
    * Configure an analog input channel.
    * | Channel | Pin | Comments                                 |
