@@ -9,10 +9,14 @@
   "scripts": {
     "build": "node node_modules/webpack-cli/bin/cli.js --config webpack.prod.js",
     "watch": "node node_modules/webpack-cli/bin/cli.js watch --config webpack.dev.js",
-    "docs": "node node_modules/documentation/bin/documentation.js build -f html -o docs src/index.js"
+    "docs": "node node_modules/documentation/bin/documentation.js build -f html -o docs src/index.js",
+    "prepublishOnly": "yarn && yarn build"
   },
+  "files": [
+    "dist/"
+  ],
   "dependencies": {
-    "ebb-control": "git+https://github.com/jmpinit/ebb-control.git#47e737aac4d898f6becabdb526c64876c12ad989"
+    "ebb-control": "^1.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.21.8",
