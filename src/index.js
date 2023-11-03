@@ -265,11 +265,12 @@ export class AxiDraw {
 
     // https://corexy.com/theory.html
     const steps = {
-      x: delta.x * STEPS_PER_MM,
-      y: delta.y * STEPS_PER_MM,
+      x: Math.floor(delta.x * STEPS_PER_MM),
+      y: Math.floor(delta.y * STEPS_PER_MM),
     };
 
-    this.lastCommandedPos = this.targetPos;
+    this.lastCommandedPos.x += steps.x / STEPS_PER_MM;
+    this.lastCommandedPos.y += steps.y / STEPS_PER_MM;
 
     await this.#command(async () => {
       // Wait for the command to be sent and acknowledged
