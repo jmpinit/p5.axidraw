@@ -16,7 +16,7 @@
     "dist/"
   ],
   "dependencies": {
-    "ebb-control": "^1.0.0"
+    "ebb-control": "^2.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.21.8",

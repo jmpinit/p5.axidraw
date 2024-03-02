@@ -1,5 +1,6 @@
 import {
   EiBotBoard,
+  SerialPort,
   MOTOR_STEP_DIV16,
   MOTOR_DISABLE,
   SERVO_CHANNEL_PEN,
@@ -49,7 +50,8 @@ function wait(ms) {
 // eslint-disable-next-line import/prefer-default-export
 export class AxiDraw {
   constructor() {
-    this.ebb = new EiBotBoard();
+    const serialPort = new SerialPort(115200);
+    this.ebb = new EiBotBoard(serialPort);
     this.connected = false;
     this.targetPos = { x: 0, y: 0 };
     this.lastCommandedPos = { x: 0, y: 0 };
